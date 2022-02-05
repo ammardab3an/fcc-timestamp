@@ -1,0 +1,27 @@
+{
+    "name": "time-stamp",
+    "version": "0.0.1",
+    "description": "a time stamp api",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://git.heroku.com/dab3an-timestamp.git"
+    },
+    "keywords": [
+        "node.js",
+        "express.js",
+        "api",
+        "backend",
+        "fcc",
+        "freecodecamp"
+    ],
+    "author": "AmmarDab3an",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.2"
+    }
+}
