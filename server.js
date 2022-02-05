@@ -1,25 +1,9 @@
 const express = require('express');
+var cors = require('cors')
 const app = express();
 const router = express.Router();
 
 const PORT = process.env.PORT || 5500;
-
-const enableCORS = function (req, res, next) {
-    if (!process.env.DISABLE_XORIGIN) {
-        const allowedOrigins = ["https://www.freecodecamp.org"];
-        const origin = req.headers.origin;
-        if (!process.env.XORIGIN_RESTRICT || allowedOrigins.indexOf(origin) > -1) {
-            console.log(req.method);
-            res.set({
-                "Access-Control-Allow-Origin": origin,
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers":
-                    "Origin, X-Requested-With, Content-Type, Accept",
-            });
-        }
-    }
-    next();
-};
 
 router.get('/', (req, res) => {
 
@@ -57,6 +41,8 @@ router.get('/:timestamp?', (req, res) => {
     });
 });
 
+app.use(cors());
+
 app.use((req, res, next) => {
     console.log(`${req.method} - ${req.path} : ${req.ip}`);
     next();
@@ -68,7 +54,7 @@ app.get('/', (req, res) => {
 
 app.use("/public", express.static(__dirname + '/public'));
 
-app.use('/api', enableCORS, router);
+app.use('/api', router);
 
 app.use(function (req, res) {
     if (req.method.toLowerCase() === "options") {
