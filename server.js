@@ -4,15 +4,14 @@ const router = express.Router();
 
 const PORT = process.env.PORT || 5500;
 
-app.use((req, res, next) => {
-    console.log(`${req.method} - ${req.path} : ${req.ip}`);
-    next();
-});
+router.get('/', (req, res) => {
 
-app.use("/public", express.static(__dirname + '/public'));
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + "/index.html");
+    const date = new Date(Date.now());
+    
+    res.json({
+        unix: date.getTime(),
+        utc: date.toUTCString()
+    });
 });
 
 router.get('/:timestamp', (req, res) => {
@@ -27,15 +26,30 @@ router.get('/:timestamp', (req, res) => {
         timestamp = parseInt(timestamp);
     }
 
-    console.log(timestamp);
+    if(isNaN(timestamp)){
+        return res.json({
+            error : "Invalid Date"
+        });
+    }
 
     date = new Date(timestamp);
 
     res.json({
         unix: date.getTime(),
         utc: date.toUTCString()
-    })
+    });
 });
+
+app.use((req, res, next) => {
+    console.log(`${req.method} - ${req.path} : ${req.ip}`);
+    next();
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + "/index.html");
+});
+
+app.use("/public", express.static(__dirname + '/public'));
 
 app.use('/api', router);
 
